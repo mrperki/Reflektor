@@ -1,41 +1,47 @@
-﻿[
-    /*
-    Job properties:
-    ---------------
-    Name:                   (required) unique name for this mirror job
-    SourcePath:             (required) path containing the files to mirror
-    DestinationPath:        (required) path where the mirror(s) will be copied
-    MirrorFolderPrefix:     (optional) the prefix for the folders Reflektor will create. Default is the value of Name.
-    FolderLifetimeHours:    (optional) how many hours to overwrite the current mirror folder before creating a new one.
-                            Default is to always overwrite.
-    Enabled:                (optional) true if this job is enabled, false if not. Default is true.
-    Triggers:               (required) the triggers that determine when and how often this job runs.
+﻿{
+    "Jobs": [
+        /*
+        Job properties:
+        ---------------
+        Name:                   (required) unique name for this mirror job
+        SourcePath:             (required) path containing the files to mirror
+        DestinationPath:        (required) path where the mirror(s) will be copied
+        MirrorFolderPrefix:     (optional) the prefix for the folders Reflektor will create. Default is the value of Name.
+        FolderLifetimeHours:    (optional) how many hours to overwrite the current mirror folder before creating a new one.
+                                Default is to always overwrite.
+        Enabled:                (optional) true if this job is enabled, false if not. Default is true.
+        Triggers:               (required) the triggers that determine when and how often this job runs.
 
-    Trigger properties:
-    -------------------
-    Name:                   (optional) unique name for this trigger, used only t
-    StartDateTime:          (optional) the local date and time to start the job. Default starts it immediately.
-    RunEvery:               (required) how frequently to run the job
-    RunEveryInterval:       (optional) the interval of frequency for the job, either "Minutes", "Hours", or "Days". Default is "Hours".
-    Enabled:                (optional) true if this trigger is enabled, false if now. Default is true.
-    RunImmediatelyIfMissed: (optional) if true, job will run immediately if the trigger missed its last scheduled run.
-                            If false, job will wait until the next trigger interval to run.
+        Trigger properties:
+        -------------------
+        Name:                   (optional) unique name for this trigger, used only t
+        StartDateTime:          (optional) the local date and time to start the job. Default starts it immediately.
+        RunEvery:               (required) how frequently to run the job
+        RunEveryInterval:       (optional) the interval of frequency for the job, either "Minutes", "Hours", or "Days". Default is "Hours".
+        Enabled:                (optional) true if this trigger is enabled, false if now. Default is true.
+        RunImmediatelyIfMissed: (optional) if true, job will run immediately if the trigger missed its last scheduled run.
+                                If false, job will wait until the next trigger interval to run.
+        MirrorFolderPrefix:     (optional) the prefix for the folders Reflektor will create on this trigger. Default is the job value.
+        DisableOnFail:          (optional) if true, the trigger will be disabled until the service is restarted if it fails to run the job.
+                                If false, the trigger will be rerun at the next interval. Default is true.
     
-    Example job that runs immediately, then again once every 3 hours, overwriting for 6 hours, retaining 5 copies
-    {
-        "Name": "Example3Hours",
-        "SourcePath": "C:\temp\source",
-        "DestinationPath": "C:\temp\destination",
-        "MirrorFolderPrefix": "temp.source.every.3.hours",
-        "RetainFolderCount": 5,
-        "FolderLifetimeHours": 6,
-        "Triggers": [
-            {
-                "Name": "Every 3 Hours",
-                "RunEvery": 3,
-                "RunEveryInterval": "Hours"
-            }
-        ]
-    }
-    */
-]
+        Example job that runs immediately, then again once every 3 hours, overwriting for 6 hours, retaining 5 copies
+        {
+            "Name": "Example3Hours",
+            "SourcePath": "C:\temp\source",
+            "DestinationPath": "C:\temp\destination",
+            "MirrorFolderPrefix": "temp.source.every.3.hours",
+            "RetainFolderCount": 5,
+            "FolderLifetimeHours": 6,
+            "Triggers": [
+                {
+                    "Name": "Every 3 Hours",
+                    "RunEvery": 3,
+                    "RunEveryInterval": "Hours"
+                }
+            ]
+        }
+        */
+    ]
+}
+

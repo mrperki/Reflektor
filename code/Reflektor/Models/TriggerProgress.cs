@@ -12,10 +12,11 @@ namespace Reflektor.Models
         Error
     }
 
-    public class TriggerProgress
+    public class TriggerProgress : IJobInstance
     {
         public Trigger Trigger { get; set; }
         public Job Job { get; set; }
+        public Guid? InstanceId { get; set; }
         public TriggerStatus Status { get; set; }
         public DateTime? NextRun { get; set; }
     }

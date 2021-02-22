@@ -22,5 +22,6 @@ namespace Reflektor.Models
         public bool Enabled { get; set; } = true;
         public bool RunImmediatelyIfMissed { get; set; } = true;
         public string MirrorFolderPrefix { get; set; }
+        public bool DisableOnFail { get; set; } = true;
     }
 }

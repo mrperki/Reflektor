@@ -54,9 +54,6 @@ namespace Reflektor
 
         private static bool CheckNextRun(this TriggerProgress triggerProgress)
         {
-            if (triggerProgress.Status == TriggerStatus.WaitingToStart)
-                return triggerProgress.Trigger.StartDateTime <= DateTime.Now;
-
             if (triggerProgress.Trigger.RunImmediatelyIfMissed)
                 return triggerProgress.NextRun <= DateTime.Now;
 
@@ -65,12 +62,14 @@ namespace Reflektor
 
             // If we missed the time by more than a minute, reschedule
             if (timeDiff.Value.TotalMinutes <= 1) return true;
-            triggerProgress.UpdateNextRun();
+            triggerProgress.CompleteAndQueueNext(true);
             return false;
         }
 
-        public static void UpdateNextRun(this TriggerProgress triggerProgress)
+        public static void CompleteAndQueueNext(this TriggerProgress triggerProgress, bool keepExistingStatus = false)
         {
+            triggerProgress.InstanceId = null;
+            triggerProgress.Status = keepExistingStatus ? triggerProgress.Status : TriggerStatus.WaitingForNext;
             switch (triggerProgress.Trigger.RunEveryInterval)
             {
                 case TriggerInterval.Days:
@@ -84,5 +83,16 @@ namespace Reflektor
                     break;
             }
         }
+
+        public static void Fail(this TriggerProgress triggerProgress)
+        {
+            triggerProgress.InstanceId = null;
+            triggerProgress.Status = TriggerStatus.Error;
+            if (triggerProgress.Trigger.DisableOnFail)
+                triggerProgress.Trigger.Enabled = false;
+        }
+
+        public static TriggerProgress GetForInstance(this IEnumerable<TriggerProgress> progress, IJobInstance instance)
+            => progress.SingleOrDefault(p => p.InstanceId == instance.InstanceId);
     }
 }

@@ -36,13 +36,12 @@ namespace Reflektor
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-                    //services.AddSingleton(options);
-                    //services.AddHostedService<ImageClassifierWorker>()
-                        //.Configure<EventLogSettings>(config =>
-                        //{
-                        //    config.LogName = "Image Classifier Service";
-                        //    config.SourceName = "Image Classifier Service Source";
-                        //});
+                    services.AddSingleton(options);
+                    services.AddSingleton<ConfigProvider>();
+                    services.AddSingleton<IJobProvider, JobProvider>();
+                    services.AddSingleton<JobWorkerFactory>();
+                    services.AddTransient<IJobWorker, JobWorker>();
+                    services.AddHostedService<ReflektorService>();
                 }).UseWindowsService();
     }
 }
